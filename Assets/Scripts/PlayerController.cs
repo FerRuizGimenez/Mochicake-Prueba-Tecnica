@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public float moveSpeed;
     bool isMovingRight = true;
+    bool firstInput = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,8 +15,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Move();
-        CheckInput();
+        if (GameManager.instance.gameStarted)
+        {
+            Move();
+            CheckInput();
+        }
     }
 
     void Move()
@@ -25,6 +29,12 @@ public class PlayerController : MonoBehaviour
 
     void CheckInput()
     {
+        //if first input then ignore
+        if (firstInput)
+        {
+            firstInput = false;
+            return;
+        }
         if (Input.GetMouseButtonDown(0))
         {
             ChangeDirection();
