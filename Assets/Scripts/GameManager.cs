@@ -5,8 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-
     public bool gameStarted;
+    public GameObject platformSpawner;
 
     void Awake()
     {
@@ -15,13 +15,6 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (!gameStarted)
@@ -35,9 +28,11 @@ public class GameManager : MonoBehaviour
     public void GameStart()
     {
         gameStarted = true;
+        platformSpawner.SetActive(true);
     }
     public void GameOver()
     {
+        platformSpawner.SetActive(false);
         //gameStarted = false;
     }
 }

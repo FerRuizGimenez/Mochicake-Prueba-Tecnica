@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
     bool isMovingRight = true;
     bool firstInput = true;
-    // Start is called before the first frame update
     void Start()
     {
         
@@ -19,6 +18,10 @@ public class PlayerController : MonoBehaviour
         {
             Move();
             CheckInput();
+        }
+        if(transform.position.y <= -2)
+        {
+            GameManager.instance.GameOver();
         }
     }
 
