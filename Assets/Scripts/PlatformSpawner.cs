@@ -11,25 +11,30 @@ public class PlatformSpawner : MonoBehaviour
     Vector3 newPos;
     Quaternion newRot;
     bool lastWasRotated;
+    bool stop;
 
     void Start()
     {
         lastPosition = lastPlatform.position;
+        StartCoroutine(SpawnPlatforms());
     }
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            SpawnPlatforms();
-        }
+
     }
 
-    void SpawnPlatforms()
+    IEnumerator SpawnPlatforms()
     {
-        GeneratePosition();
-        Instantiate(platform, newPos, newRot);
-        lastPosition = newPos;
+        while (!stop)
+        {
+            GeneratePosition();
+            Instantiate(platform, newPos, newRot);
+            lastPosition = newPos; 
+
+            yield return new WaitForSeconds(0.1f);
+        }
+
     }
     void GeneratePosition()
     {
