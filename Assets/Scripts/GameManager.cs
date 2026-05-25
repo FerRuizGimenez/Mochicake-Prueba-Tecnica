@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -33,6 +34,11 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         platformSpawner.SetActive(false);
-        //gameStarted = false;
+
+        Invoke("ReloadLevel", 1f);
+    }
+    void ReloadLevel()
+    {
+        SceneManager.LoadScene("Game");
     }
 }

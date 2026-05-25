@@ -17,7 +17,7 @@ public class Platform : MonoBehaviour
     {
         if(collision.gameObject.tag == "Player")
         {
-            Invoke("Fall", 0.5f);       
+            Invoke("Fall", 0.4f);       
         }
     }
     void Fall()
