@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public bool gameStarted;
     public GameObject platformSpawner;
+    int score = 0;
 
     void Awake()
     {
@@ -30,6 +31,8 @@ public class GameManager : MonoBehaviour
     {
         gameStarted = true;
         platformSpawner.SetActive(true);
+
+        StartCoroutine(UpdateScore());
     }
     public void GameOver()
     {
@@ -40,5 +43,14 @@ public class GameManager : MonoBehaviour
     void ReloadLevel()
     {
         SceneManager.LoadScene("Game");
+    }
+    IEnumerator UpdateScore()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            score++;
+            print(score);
+        }
     }
 }
