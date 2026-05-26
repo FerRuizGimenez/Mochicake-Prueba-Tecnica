@@ -2,12 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public bool gameStarted;
     public GameObject platformSpawner;
+    public GameObject gameplayUI;
+    public TextMeshProUGUI scoreText;
+
     int score = 0;
 
     void Awake()
@@ -31,6 +35,7 @@ public class GameManager : MonoBehaviour
     {
         gameStarted = true;
         platformSpawner.SetActive(true);
+        gameplayUI.SetActive(true);
 
         StartCoroutine(UpdateScore());
     }
@@ -50,7 +55,8 @@ public class GameManager : MonoBehaviour
         {
             yield return new WaitForSeconds(1f);
             score++;
-            print(score);
+            scoreText.text = score.ToString(); 
+            //print(score);
         }
     }
 }
