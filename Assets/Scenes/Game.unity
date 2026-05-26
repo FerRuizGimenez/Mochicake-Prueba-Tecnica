@@ -617,6 +617,7 @@ GameObject:
   - component: {fileID: 326507458}
   - component: {fileID: 326507460}
   - component: {fileID: 326507459}
+  - component: {fileID: 326507461}
   m_Layer: 5
   m_Name: TapText
   m_TagString: Untagged
@@ -740,6 +741,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 326507457}
   m_CullTransparentMesh: 1
+--- !u!95 &326507461
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326507457}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3945666997fc1d043ba6653a349c8b38, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &471141770
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,6 +897,7 @@ MonoBehaviour:
   gameStarted: 0
   platformSpawner: {fileID: 1177850333}
   gameplayUI: {fileID: 1353590627}
+  menuUi: {fileID: 1959223140}
   scoreText: {fileID: 151152989}
 --- !u!4 &549827470
 Transform:
