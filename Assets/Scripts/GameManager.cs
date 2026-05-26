@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public bool gameStarted;
     public GameObject platformSpawner;
     public GameObject gameplayUI;
+    public GameObject menuUi;
     public TextMeshProUGUI scoreText;
 
     int score = 0;
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviour
         gameStarted = true;
         platformSpawner.SetActive(true);
         gameplayUI.SetActive(true);
+        menuUi.SetActive(false);
 
         StartCoroutine(UpdateScore());
     }
