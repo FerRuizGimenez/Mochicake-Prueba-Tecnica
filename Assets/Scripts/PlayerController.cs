@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
             Move();
             CheckInput();
         }
-        if(transform.position.y <= -2)
+        if(transform.position.y <= -0.5)
         {
             GameManager.instance.GameOver();
         }

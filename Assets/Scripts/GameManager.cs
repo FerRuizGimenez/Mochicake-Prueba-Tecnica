@@ -11,9 +11,11 @@ public class GameManager : MonoBehaviour
     public GameObject platformSpawner;
     public GameObject gameplayUI;
     public GameObject menuUi;
+    public TextMeshProUGUI highScoreText;
     public TextMeshProUGUI scoreText;
 
     int score = 0;
+    int highScore;
 
     void Awake()
     {
@@ -21,6 +23,11 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
+    }
+    void Start()
+    {
+        highScore = PlayerPrefs.GetInt("HighScore");
+        highScoreText.text = "Best Score : " + highScore;
     }
     void Update()
     {
@@ -39,12 +46,13 @@ public class GameManager : MonoBehaviour
         gameplayUI.SetActive(true);
         menuUi.SetActive(false);
 
-        StartCoroutine(UpdateScore());
+        StartCoroutine("UpdateScore");
     }
     public void GameOver()
     {
         platformSpawner.SetActive(false);
-
+        StopCoroutine("UpdateScore");
+        SaveHighScore();
         Invoke("ReloadLevel", 1f);
     }
     void ReloadLevel()
@@ -59,6 +67,22 @@ public class GameManager : MonoBehaviour
             score++;
             scoreText.text = score.ToString(); 
             //print(score);
+        }
+    }
+    void SaveHighScore()
+    {
+        if (PlayerPrefs.HasKey("HighScore"))
+        {
+            //already have a highscore - not playing for the first time
+            if(score > PlayerPrefs.GetInt("HighScore"))
+            {
+                PlayerPrefs.SetInt("HighScore", score);
+            }
+        }
+        else
+        {
+            //playing for the first time
+            PlayerPrefs.SetInt("HighScore", score); 
         }
     }
 }
