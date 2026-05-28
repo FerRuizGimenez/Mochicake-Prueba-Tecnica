@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject pickupEffect;
     public float moveSpeed;
     bool isMovingRight = true;
     bool firstInput = true;
@@ -62,6 +63,7 @@ public class PlayerController : MonoBehaviour
         if(other.gameObject.tag == "Diamond")
         {
             GameManager.instance.CollectDiamonds();
+            Instantiate(pickupEffect, other.transform.position, pickupEffect.transform.rotation);
             other.gameObject.SetActive(false);  
         }
     }
