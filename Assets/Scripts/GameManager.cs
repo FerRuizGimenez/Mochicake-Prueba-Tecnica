@@ -58,8 +58,9 @@ public class GameManager : MonoBehaviour
         menuUi.SetActive(false);
 
         //play audio
-        audioSource.clip = gameAudio[0];
-        audioSource.Play();
+        //audioSource.clip = gameAudio[0];
+        //audioSource.Play();
+        audioSource.PlayOneShot(gameAudio[0]);
 
         StartCoroutine("UpdateScore");
     }
@@ -85,6 +86,13 @@ public class GameManager : MonoBehaviour
             //print(score);
         }
     }
+    public void CollectDiamonds()
+    {
+        diamonds += 1;
+        diamondsText.text = diamonds.ToString();
+        
+        audioSource.PlayOneShot(gameAudio[2], 0.3f);
+    }
     void SaveHighScore()
     {
         if (PlayerPrefs.HasKey("HighScore"))
@@ -101,11 +109,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("HighScore", score); 
         }
     }
-    public void CollectDiamonds()
-    {
-        diamonds += 1;
-        diamondsText.text = diamonds.ToString();
-    }
+
     void SaveDiamonds()
     {
         if (PlayerPrefs.HasKey("Diamonds"))

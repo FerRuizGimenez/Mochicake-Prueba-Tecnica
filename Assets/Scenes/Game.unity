@@ -1175,6 +1175,7 @@ MonoBehaviour:
   gameAudio:
   - {fileID: 8300000, guid: d31ddb2d4a984904084a5b4cc703aa35, type: 3}
   - {fileID: 8300000, guid: e261f775cea5be54baee5dd42372750d, type: 3}
+  - {fileID: 8300000, guid: 5633bff3de242a24f8c80e8de6c491fa, type: 3}
 --- !u!4 &549827470
 Transform:
   m_ObjectHideFlags: 0
