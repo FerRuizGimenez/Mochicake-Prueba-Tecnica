@@ -64,18 +64,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Diamond
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 1bc71836b4992a44cb33d2a0b8892fa0, type: 3}
+      propertyPath: m_TagString
+      value: Diamond
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8934777400606672865, guid: 1bc71836b4992a44cb33d2a0b8892fa0, type: 3}
     - {fileID: 65702495048144492, guid: 1bc71836b4992a44cb33d2a0b8892fa0, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1bc71836b4992a44cb33d2a0b8892fa0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1950718367394947}
     - targetCorrespondingSourceObject: {fileID: 3851923385799439970, guid: 1bc71836b4992a44cb33d2a0b8892fa0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2465087092721423655}
-    - targetCorrespondingSourceObject: {fileID: 3851923385799439970, guid: 1bc71836b4992a44cb33d2a0b8892fa0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1465888594180790580}
   m_SourcePrefab: {fileID: 100100000, guid: 1bc71836b4992a44cb33d2a0b8892fa0, type: 3}
 --- !u!1 &656343001737585972 stripped
 GameObject:
@@ -103,13 +107,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!135 &1465888594180790580
+--- !u!1 &3507849201045515783 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1bc71836b4992a44cb33d2a0b8892fa0, type: 3}
+  m_PrefabInstance: {fileID: 4354712089436722006}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &1950718367394947
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 656343001737585972}
+  m_GameObject: {fileID: 3507849201045515783}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -122,5 +131,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.55
-  m_Center: {x: -0.00021256506, y: 0.002056673, z: 0.40364563}
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0.6, z: 0}

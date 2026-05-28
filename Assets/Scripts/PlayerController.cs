@@ -56,4 +56,13 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0,0,0);
         }
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.tag == "Diamond")
+        {
+            GameManager.instance.CollectDiamonds();
+            other.gameObject.SetActive(false);  
+        }
+    }
 }

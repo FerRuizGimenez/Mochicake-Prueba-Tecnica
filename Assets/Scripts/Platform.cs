@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class Platform : MonoBehaviour
 {
+    public GameObject diamondPrefab;
     void Start()
     {
-        
-    }
+        int randDiamond = Random.Range(0,5);
 
-    void Update()
-    {
-        
+        Vector3 diamondPos = transform.position;
+        diamondPos.y += 2;
+
+        if(randDiamond < 1)
+        {
+            //spawn diamond
+            GameObject diamondInstance = Instantiate(diamondPrefab, diamondPos, diamondPrefab.transform.rotation);
+            diamondInstance.transform.SetParent(gameObject.transform);
+        }
     }
     void OnCollisionExit(Collision collision)
     {

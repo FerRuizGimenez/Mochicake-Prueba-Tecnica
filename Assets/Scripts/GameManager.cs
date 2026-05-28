@@ -13,11 +13,15 @@ public class GameManager : MonoBehaviour
     public GameObject menuUi;
     public TextMeshProUGUI highScoreText;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI diamondsText;
+    public TextMeshProUGUI totalDiamondsText;
     AudioSource audioSource;
     public AudioClip[] gameAudio;
 
     int score = 0;
     int highScore;
+    int diamonds;
+    int totalDiamonds;
 
     void Awake()
     {
@@ -32,6 +36,8 @@ public class GameManager : MonoBehaviour
     {
         highScore = PlayerPrefs.GetInt("HighScore");
         highScoreText.text = "Best Score : " + highScore;
+        totalDiamonds = PlayerPrefs.GetInt("Diamonds");
+        totalDiamondsText.text = totalDiamonds.ToString();
     }
     void Update()
     {
@@ -62,6 +68,7 @@ public class GameManager : MonoBehaviour
         platformSpawner.SetActive(false);
         StopCoroutine("UpdateScore");
         SaveHighScore();
+        SaveDiamonds();
         Invoke("ReloadLevel", 1f);
     }
     void ReloadLevel()
@@ -93,5 +100,25 @@ public class GameManager : MonoBehaviour
             //playing for the first time
             PlayerPrefs.SetInt("HighScore", score); 
         }
+    }
+    public void CollectDiamonds()
+    {
+        diamonds += 1;
+        diamondsText.text = diamonds.ToString();
+    }
+    void SaveDiamonds()
+    {
+        if (PlayerPrefs.HasKey("Diamonds"))
+        {
+            if(diamonds > PlayerPrefs.GetInt("Diamonds"))
+            {
+                PlayerPrefs.SetInt("Diamonds", diamonds);
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Diamonds", diamonds);
+        }
+        
     }
 }
