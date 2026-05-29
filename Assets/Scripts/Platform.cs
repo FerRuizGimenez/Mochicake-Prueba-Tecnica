@@ -1,34 +1,80 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Platform : MonoBehaviour
 {
     public GameObject diamondPrefab;
-    void Start()
+    private Renderer platformRenderer;
+
+    void Awake()
     {
-        int randDiamond = Random.Range(0,5);
+        platformRenderer = GetComponent<Renderer>();
+        CameraColor.OnColorChanged += UpdateColor;
+    }
 
-        Vector3 diamondPos = transform.position;
-        diamondPos.y += 2;
+    void OnEnable()
+    {
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.isKinematic = false;
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.isKinematic = true;
 
-        if(randDiamond < 1)
+        if (CameraColor.currentPlatformColor != default)
         {
-            //spawn diamond
-            GameObject diamondInstance = Instantiate(diamondPrefab, diamondPos, diamondPrefab.transform.rotation);
-            diamondInstance.transform.SetParent(gameObject.transform);
+            platformRenderer.material.color = CameraColor.currentPlatformColor;
+        }
+
+        if (DiamondPool.instance == null) return; // ← si el pool no existe todavía, no spawneamos diamante
+
+        int randDiamond = Random.Range(0, 5);
+        if (randDiamond < 1)
+        {
+            Vector3 diamondPos = transform.position;
+            diamondPos.y += 2;
+            GameObject diamondInstance = DiamondPool.instance.GetDiamond(diamondPos, diamondPrefab.transform.rotation);
+            diamondInstance.transform.SetParent(transform);
         }
     }
+
+    void Start() { }
+
+    void UpdateColor(Color newColor)
+    {
+        if (platformRenderer != null)
+            platformRenderer.material.color = newColor;
+    }
+
+    void OnDestroy()
+    {
+        CameraColor.OnColorChanged -= UpdateColor;
+        CancelInvoke(); // ← cancela todos los Invoke pendientes
+    }
+
     void OnCollisionExit(Collision collision)
     {
-        if(collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
-            Invoke("Fall", 0.4f);       
+            Invoke("Fall", 0.4f);
         }
     }
+
     void Fall()
     {
         GetComponent<Rigidbody>().isKinematic = false;
-        Destroy(gameObject, 2f);
+        Invoke("ReturnToPool", 2f);
+    }
+
+    void ReturnToPool()
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("Diamond"))
+            {
+                child.SetParent(null);
+                DiamondPool.instance.ReturnDiamond(child.gameObject);
+            }
+        }
+
+        PlatformPool.instance.ReturnPlatform(gameObject);
     }
 }

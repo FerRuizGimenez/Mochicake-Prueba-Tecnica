@@ -1,17 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     public GameObject pickupEffect;
     public float moveSpeed;
-    bool isMovingRight = true;
-    bool firstInput = true;
-    void Start()
-    {
-        
-    }
+    
+    private bool isMovingRight = true;
+    private bool firstInput = true;
+    private bool isDead = false;
 
     void Update()
     {
@@ -20,8 +16,9 @@ public class PlayerController : MonoBehaviour
             Move();
             CheckInput();
         }
-        if(transform.position.y <= -0.5)
+        if (transform.position.y <= -0.5f && !isDead)
         {
+            isDead = true;
             GameManager.instance.GameOver();
         }
     }
@@ -33,7 +30,6 @@ public class PlayerController : MonoBehaviour
 
     void CheckInput()
     {
-        //if first input then ignore
         if (firstInput)
         {
             firstInput = false;
@@ -42,29 +38,30 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             ChangeDirection();
-        }    
+        }
     }
+
     void ChangeDirection()
     {
         if (isMovingRight)
         {
             isMovingRight = false;
-            transform.rotation = Quaternion.Euler(0,-90,0);
+            transform.rotation = Quaternion.Euler(0, -90, 0);
         }
         else
         {
             isMovingRight = true;
-            transform.rotation = Quaternion.Euler(0,0,0);
+            transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "Diamond")
+        if (other.gameObject.tag == "Diamond")
         {
             GameManager.instance.CollectDiamonds();
             Instantiate(pickupEffect, other.transform.position, pickupEffect.transform.rotation);
-            other.gameObject.SetActive(false);  
+            other.gameObject.SetActive(false);
         }
     }
 }

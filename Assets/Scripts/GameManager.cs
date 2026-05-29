@@ -7,6 +7,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public CameraColor cameraColor;
     public bool gameStarted;
     public GameObject platformSpawner;
     public GameObject gameplayUI;
@@ -34,9 +35,11 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        highScore = PlayerPrefs.GetInt("HighScore");
+        //PlayerPrefs.SetInt("Diamonds", 0);
+
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
         highScoreText.text = "Best Score : " + highScore;
-        totalDiamonds = PlayerPrefs.GetInt("Diamonds");
+        totalDiamonds = PlayerPrefs.GetInt("Diamonds", 0);
         totalDiamondsText.text = totalDiamonds.ToString();
     }
     void Update()
@@ -58,14 +61,15 @@ public class GameManager : MonoBehaviour
         menuUi.SetActive(false);
 
         //play audio
-        //audioSource.clip = gameAudio[0];
-        //audioSource.Play();
         audioSource.PlayOneShot(gameAudio[0]);
+        cameraColor.StartColorChange();
 
         StartCoroutine("UpdateScore");
     }
     public void GameOver()
     {
+        gameStarted = false;
+
         platformSpawner.SetActive(false);
         StopCoroutine("UpdateScore");
         SaveHighScore();
@@ -112,17 +116,7 @@ public class GameManager : MonoBehaviour
 
     void SaveDiamonds()
     {
-        if (PlayerPrefs.HasKey("Diamonds"))
-        {
-            if(diamonds > PlayerPrefs.GetInt("Diamonds"))
-            {
-                PlayerPrefs.SetInt("Diamonds", diamonds);
-            }
-        }
-        else
-        {
-            PlayerPrefs.SetInt("Diamonds", diamonds);
-        }
-        
+        int savedDiamonds = PlayerPrefs.GetInt("Diamonds", 0);
+        PlayerPrefs.SetInt("Diamonds", savedDiamonds + diamonds);
     }
 }

@@ -14,7 +14,7 @@ public class CameraFollow : MonoBehaviour
 
     void Update()
     {
-        if(target.position.y >= 0)
+        if(target.position.y >= 0 && GameManager.instance.gameStarted)
         {
             Follow();
         }

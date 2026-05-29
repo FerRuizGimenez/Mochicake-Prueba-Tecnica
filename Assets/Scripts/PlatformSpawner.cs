@@ -1,11 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Xml.Serialization;
 using UnityEngine;
 
 public class PlatformSpawner : MonoBehaviour
 {
-    public GameObject platform;
     public Transform lastPlatform;
     Vector3 lastPosition;
     Vector3 newPos;
@@ -19,30 +16,25 @@ public class PlatformSpawner : MonoBehaviour
         StartCoroutine(SpawnPlatforms());
     }
 
-    void Update()
-    {
-
-    }
-
     IEnumerator SpawnPlatforms()
     {
         while (!stop)
         {
             GeneratePosition();
-            Instantiate(platform, newPos, newRot);
-            lastPosition = newPos; 
+            PlatformPool.instance.GetPlatform(newPos, newRot);
+            lastPosition = newPos;
 
             yield return new WaitForSeconds(0.25f);
         }
-
     }
+
     void GeneratePosition()
     {
         newPos = lastPosition;
 
         int rand = Random.Range(0, 2);
 
-        if (rand > 0) // Avanza en X
+        if (rand > 0)
         {
             if (lastWasRotated)
             {
@@ -56,7 +48,7 @@ public class PlatformSpawner : MonoBehaviour
             newRot = Quaternion.identity;
             lastWasRotated = false;
         }
-        else // Avanza en Z
+        else
         {
             if (!lastWasRotated)
             {
