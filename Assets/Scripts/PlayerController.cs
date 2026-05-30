@@ -54,12 +54,16 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
+    public void IncreaseSpeed(float amount)
+    {
+        moveSpeed += amount;
+    }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Diamond")
         {
-            GameManager.instance.CollectDiamonds();
+            GameManager.instance.CollectDiamonds(other.transform.position);
             Instantiate(pickupEffect, other.transform.position, pickupEffect.transform.rotation);
             other.gameObject.SetActive(false);
         }
