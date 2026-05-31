@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
 
     void ChangeDirection()
     {
+        GameManager.instance.PlaySound(1, 0.05f); // ← tap
         if (isMovingRight)
         {
             isMovingRight = false;

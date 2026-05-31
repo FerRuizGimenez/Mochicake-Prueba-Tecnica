@@ -6,11 +6,13 @@ public class CameraColor : MonoBehaviour
 {
     public static CameraColor instance;
     public static Color currentPlatformColor;
-    
+
     public Color[] colors;
     public float transitionSpeed = 1.5f;
 
     public static event System.Action<Color> OnColorChanged;
+
+    private Coroutine colorCoroutine;
 
     void Awake()
     {
@@ -20,7 +22,16 @@ public class CameraColor : MonoBehaviour
 
     public void StartColorChange()
     {
-        StartCoroutine(ColorChanger());
+        colorCoroutine = StartCoroutine(ColorChanger());
+    }
+
+    public void StopColorChange()
+    {
+        if (colorCoroutine != null)
+        {
+            StopCoroutine(colorCoroutine);
+            colorCoroutine = null;
+        }
     }
 
     IEnumerator ColorChanger()
@@ -31,6 +42,7 @@ public class CameraColor : MonoBehaviour
             Color targetColor = colors[Random.Range(0, colors.Length)];
             currentPlatformColor = targetColor;
             OnColorChanged?.Invoke(targetColor);
+            GameManager.instance.PlaySound(4, 0.5f);
             yield return StartCoroutine(TransitionColor(targetColor));
         }
     }
@@ -38,11 +50,11 @@ public class CameraColor : MonoBehaviour
     IEnumerator TransitionColor(Color targetColor)
     {
         Color startColor = Camera.main.backgroundColor;
-        
+
         float h, s, v;
         Color.RGBToHSV(targetColor, out h, out s, out v);
         Color lighterColor = Color.HSVToRGB(h, s * 0.5f, Mathf.Min(v + 0.3f, 1f));
-        
+
         float elapsed = 0f;
 
         while (elapsed < 1f)

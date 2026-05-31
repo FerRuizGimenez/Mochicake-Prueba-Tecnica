@@ -11,9 +11,12 @@ public class GameManager : MonoBehaviour
     public GameObject platformSpawner;
     public GameObject gameplayUI;
     public GameObject menuUi;
+    public GameObject gameOverUI;
     public TextMeshProUGUI highScoreText;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI totalDiamondsText;
+    public TextMeshProUGUI gameOverScoreText;
+    public TextMeshProUGUI gameOverDiamondsText;
     public GameObject floatingTextPrefab;
     public CameraColor cameraColor;
     public PlayerController player;
@@ -52,7 +55,14 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                GameStart();
+                if (gameOverUI.activeSelf)
+                {
+                    Restart();
+                }
+                else
+                {
+                    GameStart();
+                }
             }
         }
     }
@@ -63,10 +73,15 @@ public class GameManager : MonoBehaviour
         platformSpawner.SetActive(true);
         gameplayUI.SetActive(true);
         menuUi.SetActive(false);
-        audioSource.PlayOneShot(gameAudio[0]);
+        PlaySound(0, 0.2f);
         cameraColor.StartColorChange();
         StartCoroutine("UpdateScore");
         StartCoroutine("IncreaseSpeed");
+    }
+
+    public void PlaySound(int index, float volume = 1f)
+    {
+        audioSource.PlayOneShot(gameAudio[index], volume);
     }
 
     public void GameOver()
@@ -75,12 +90,18 @@ public class GameManager : MonoBehaviour
         platformSpawner.SetActive(false);
         StopCoroutine("UpdateScore");
         StopCoroutine("IncreaseSpeed");
+        cameraColor.StopColorChange();
+        PlaySound(3, 0.05f);
         SaveHighScore();
         SaveDiamonds();
-        Invoke("ReloadLevel", 1f);
+
+        gameplayUI.SetActive(false);
+        gameOverUI.SetActive(true);
+        gameOverScoreText.text = "Final Score: " + score;
+        gameOverDiamondsText.text = "Collected Diamonds: " + diamonds;
     }
 
-    void ReloadLevel()
+    void Restart()
     {
         SceneManager.LoadScene("Game");
     }
@@ -107,10 +128,10 @@ public class GameManager : MonoBehaviour
     public void CollectDiamonds(Vector3 position)
     {
         diamonds += 1;
-        audioSource.PlayOneShot(gameAudio[2], 0.3f);
+        PlaySound(2, 0.3f);
 
         Vector3 spawnPos = position;
-        spawnPos.y += 3f;
+        spawnPos.y += 1.5f;
         Instantiate(floatingTextPrefab, spawnPos, Quaternion.identity);
     }
 

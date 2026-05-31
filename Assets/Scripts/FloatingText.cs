@@ -22,8 +22,11 @@ public class FloatingText : MonoBehaviour
 
     void Update()
     {
-        elapsed += Time.deltaTime;
+        // Orientar hacia la cámara
+        transform.LookAt(Camera.main.transform);
+        transform.Rotate(0, 180f, 0);
 
+        elapsed += Time.deltaTime;
         transform.position += Vector3.up * moveSpeed * Time.deltaTime;
 
         float alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
