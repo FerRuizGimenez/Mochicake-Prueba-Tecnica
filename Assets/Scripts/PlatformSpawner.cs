@@ -8,7 +8,6 @@ public class PlatformSpawner : MonoBehaviour
     Vector3 newPos;
     Quaternion newRot;
     bool lastWasRotated;
-    bool stop;
 
     void Start()
     {
@@ -18,7 +17,7 @@ public class PlatformSpawner : MonoBehaviour
 
     IEnumerator SpawnPlatforms()
     {
-        while (!stop)
+        while (true)
         {
             GeneratePosition();
             PlatformPool.instance.GetPlatform(newPos, newRot);

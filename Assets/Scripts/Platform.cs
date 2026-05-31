@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Platform : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class Platform : MonoBehaviour
     void Awake()
     {
         platformRenderer = GetComponent<Renderer>();
-        CameraColor.OnColorChanged += UpdateColor;
+        ColorManager.OnColorChanged += UpdateColor;
     }
 
     void OnEnable()
@@ -19,12 +20,12 @@ public class Platform : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
         rb.isKinematic = true;
 
-        if (CameraColor.currentPlatformColor != default)
+        if (ColorManager.currentPlatformColor != default)
         {
-            platformRenderer.material.color = CameraColor.currentPlatformColor;
+            platformRenderer.material.color = ColorManager.currentPlatformColor;
         }
 
-        if (DiamondPool.instance == null) return; // ← si el pool no existe todavía, no spawneamos diamante
+        if (DiamondPool.instance == null) return;
 
         int randDiamond = Random.Range(0, 5);
         if (randDiamond < 1)
@@ -36,18 +37,31 @@ public class Platform : MonoBehaviour
         }
     }
 
-    void Start() { }
-
     void UpdateColor(Color newColor)
     {
-        if (platformRenderer != null)
-            platformRenderer.material.color = newColor;
+        if (platformRenderer != null && gameObject.activeInHierarchy)
+            StartCoroutine(TransitionColor(newColor));
+    }
+
+    IEnumerator TransitionColor(Color targetColor)
+    {
+        Color startColor = platformRenderer.material.color;
+        float elapsed = 0f;
+        float duration = 1f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            platformRenderer.material.color = Color.Lerp(startColor, targetColor, elapsed / duration);
+            yield return null;
+        }
+
+        platformRenderer.material.color = targetColor;
     }
 
     void OnDestroy()
     {
-        CameraColor.OnColorChanged -= UpdateColor;
-        CancelInvoke(); // ← cancela todos los Invoke pendientes
+        ColorManager.OnColorChanged -= UpdateColor;
     }
 
     void OnCollisionExit(Collision collision)

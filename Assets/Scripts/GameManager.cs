@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI gameOverScoreText;
     public TextMeshProUGUI gameOverDiamondsText;
     public GameObject floatingTextPrefab;
-    public CameraColor cameraColor;
+    public ColorManager colorManager;
     public PlayerController player;
 
     AudioSource audioSource;
@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
         gameplayUI.SetActive(true);
         menuUi.SetActive(false);
         PlaySound(0, 0.2f);
-        cameraColor.StartColorChange();
+        colorManager.StartColorChange();
         StartCoroutine("UpdateScore");
         StartCoroutine("IncreaseSpeed");
     }
@@ -90,8 +90,8 @@ public class GameManager : MonoBehaviour
         platformSpawner.SetActive(false);
         StopCoroutine("UpdateScore");
         StopCoroutine("IncreaseSpeed");
-        cameraColor.StopColorChange();
-        PlaySound(3, 0.05f);
+        colorManager.StopColorChange();
+        PlaySound(3, 0.03f);
         SaveHighScore();
         SaveDiamonds();
 

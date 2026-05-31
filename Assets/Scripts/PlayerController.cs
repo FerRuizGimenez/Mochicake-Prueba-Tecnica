@@ -1,13 +1,21 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
     public GameObject pickupEffect;
     public float moveSpeed;
-    
+
     private bool isMovingRight = true;
     private bool firstInput = true;
     private bool isDead = false;
+    private Coroutine squashCoroutine;
+    private Vector3 originalScale;
+
+    void Start()
+    {
+        originalScale = transform.localScale;
+    }
 
     void Update()
     {
@@ -43,7 +51,15 @@ public class PlayerController : MonoBehaviour
 
     void ChangeDirection()
     {
-        GameManager.instance.PlaySound(1, 0.05f); // ← tap
+        GameManager.instance.PlaySound(1, 0.05f);
+
+        if (squashCoroutine != null)
+        {
+            StopCoroutine(squashCoroutine);
+            transform.localScale = originalScale;
+        }
+        squashCoroutine = StartCoroutine(SquashStretch());
+
         if (isMovingRight)
         {
             isMovingRight = false;
@@ -55,6 +71,36 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
+
+    IEnumerator SquashStretch()
+    {
+        Vector3 squashedScale = new Vector3(originalScale.x, originalScale.y * 0.6f, originalScale.z);
+
+        float elapsed = 0f;
+        float duration = 0.1f;
+
+        // Squash
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            transform.localScale = Vector3.Lerp(originalScale, squashedScale, elapsed / duration);
+            yield return null;
+        }
+
+        elapsed = 0f;
+
+        // Stretch back
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            transform.localScale = Vector3.Lerp(squashedScale, originalScale, elapsed / duration);
+            yield return null;
+        }
+
+        transform.localScale = originalScale;
+        squashCoroutine = null;
+    }
+
     public void IncreaseSpeed(float amount)
     {
         moveSpeed += amount;
