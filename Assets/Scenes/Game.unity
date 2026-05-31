@@ -2026,12 +2026,12 @@ MonoBehaviour:
   gameplayUI: {fileID: 1353590627}
   menuUi: {fileID: 1959223140}
   gameOverUI: {fileID: 1372333181}
+  floatingTextPrefab: {fileID: 1535184501254425057, guid: ab86cb51db191754bbe40677ac7a064c, type: 3}
   highScoreText: {fileID: 26917924}
   scoreText: {fileID: 151152989}
   totalDiamondsText: {fileID: 816411600}
   gameOverScoreText: {fileID: 55316136}
   gameOverDiamondsText: {fileID: 341836086}
-  floatingTextPrefab: {fileID: 1535184501254425057, guid: ab86cb51db191754bbe40677ac7a064c, type: 3}
   colorManager: {fileID: 39276566}
   player: {fileID: 289601349}
   gameAudio:

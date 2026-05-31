@@ -7,13 +7,14 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
 
     private bool isMovingRight = true;
-    private bool firstInput = true;
+    private bool firstInput = true; // Ignores the first input to prevent immediate direction change on game start
     private bool isDead = false;
     private Coroutine squashCoroutine;
     private Vector3 originalScale;
 
     void Start()
     {
+        // Store the original scale to use as reference for squash/stretch animation
         originalScale = transform.localScale;
     }
 
@@ -24,6 +25,8 @@ public class PlayerController : MonoBehaviour
             Move();
             CheckInput();
         }
+
+        // Trigger game over when player falls below the threshold
         if (transform.position.y <= -0.5f && !isDead)
         {
             isDead = true;
@@ -33,16 +36,19 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
+        // Move the player along its right axis at a constant speed
         transform.position += transform.right * moveSpeed * Time.deltaTime;
     }
 
     void CheckInput()
     {
+        // Skip the first input to avoid changing direction immediately when the game starts
         if (firstInput)
         {
             firstInput = false;
             return;
         }
+
         if (Input.GetMouseButtonDown(0))
         {
             ChangeDirection();
@@ -51,8 +57,9 @@ public class PlayerController : MonoBehaviour
 
     void ChangeDirection()
     {
-        GameManager.instance.PlaySound(1, 0.05f);
+        GameManager.instance.PlaySound(1, 0.03f);
 
+        // Cancel any ongoing squash animation before starting a new one
         if (squashCoroutine != null)
         {
             StopCoroutine(squashCoroutine);
@@ -60,6 +67,7 @@ public class PlayerController : MonoBehaviour
         }
         squashCoroutine = StartCoroutine(SquashStretch());
 
+        // Toggle direction between right (X axis) and forward (Z axis)
         if (isMovingRight)
         {
             isMovingRight = false;
@@ -74,12 +82,13 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator SquashStretch()
     {
+        // Flatten the Y axis while keeping X and Z unchanged
         Vector3 squashedScale = new Vector3(originalScale.x, originalScale.y * 0.6f, originalScale.z);
 
         float elapsed = 0f;
         float duration = 0.1f;
 
-        // Squash
+        // Squash: lerp from original scale to squashed scale
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
@@ -89,7 +98,7 @@ public class PlayerController : MonoBehaviour
 
         elapsed = 0f;
 
-        // Stretch back
+        // Stretch back: lerp from squashed scale back to original scale
         while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
@@ -101,6 +110,7 @@ public class PlayerController : MonoBehaviour
         squashCoroutine = null;
     }
 
+    // Called by GameManager to gradually increase difficulty over time
     public void IncreaseSpeed(float amount)
     {
         moveSpeed += amount;
@@ -111,7 +121,12 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Diamond")
         {
             GameManager.instance.CollectDiamonds(other.transform.position);
-            Instantiate(pickupEffect, other.transform.position, pickupEffect.transform.rotation);
+
+            // Spawn pickup effect slightly above the diamond position
+            Vector3 effectPos = other.transform.position;
+            effectPos.y += 1.5f;
+            Instantiate(pickupEffect, effectPos, pickupEffect.transform.rotation);
+
             other.gameObject.SetActive(false);
         }
     }

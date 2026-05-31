@@ -16,6 +16,7 @@ public class DiamondPool : MonoBehaviour
         InitPool();
     }
 
+    // Pre-instantiate all diamonds at startup and keep them inactive
     void InitPool()
     {
         for (int i = 0; i < poolSize; i++)
@@ -26,6 +27,7 @@ public class DiamondPool : MonoBehaviour
         }
     }
 
+    // Retrieve an inactive diamond from the pool, or create a new one if none are available
     public GameObject GetDiamond(Vector3 position, Quaternion rotation)
     {
         foreach (GameObject obj in pool)
@@ -39,11 +41,13 @@ public class DiamondPool : MonoBehaviour
             }
         }
 
+        // Pool exhausted: instantiate a new diamond and add it to the pool for future reuse
         GameObject newObj = Instantiate(diamondPrefab, position, rotation);
         pool.Add(newObj);
         return newObj;
     }
 
+    // Unparent and return a diamond to the pool by deactivating it
     public void ReturnDiamond(GameObject obj)
     {
         obj.transform.SetParent(null);

@@ -15,6 +15,7 @@ public class PlatformPool : MonoBehaviour
         InitPool();
     }
 
+    // Pre-instantiate all platforms at startup and keep them inactive
     void InitPool()
     {
         for (int i = 0; i < poolSize; i++)
@@ -25,6 +26,7 @@ public class PlatformPool : MonoBehaviour
         }
     }
 
+    // Retrieve an inactive platform from the pool, or create a new one if none are available
     public GameObject GetPlatform(Vector3 position, Quaternion rotation)
     {
         foreach (GameObject obj in pool)
@@ -38,12 +40,13 @@ public class PlatformPool : MonoBehaviour
             }
         }
 
-        // Si no hay disponibles, crea uno nuevo y lo agrega al pool
+        // Pool exhausted: instantiate a new platform and add it to the pool for future reuse
         GameObject newObj = Instantiate(platformPrefab, position, rotation);
         pool.Add(newObj);
         return newObj;
     }
 
+    // Return a platform to the pool by deactivating it
     public void ReturnPlatform(GameObject obj)
     {
         obj.SetActive(false);
